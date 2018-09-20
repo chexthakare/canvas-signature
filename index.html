@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script src="signature.js"></script>
+    
+</head>
+<style type="text/css">
+	.roundCorners{
+		background-color:White;
+	}
+</style>
+<body>    
+
+<div id="canvas">
+<canvas class="roundCorners" id="newSignature" 
+style="position: relative; margin: 0; padding: 0; border: 1px solid #c4caac;"></canvas>
+</div>
+
+<div>
+    <input type="button" onclick="uploadEx()" value="Save signature" />
+    <button type="button" onclick="signatureClear()">Clear signature</button>
+</div>
+
+<!-- <button type="button" onclick="signatureSave()">Save signature</button> -->
+
+
+<form method="post" accept-charset="utf-8" name="form1">
+    <input name="hidden_data" id='hidden_data' type="hidden"/>
+</form>
+
+<script>
+        function uploadEx() {
+        	signatureSave();
+            var canvas2 = document.getElementById("newSignature");
+            var dataURL = canvas2.toDataURL("image/png");
+            document.getElementById('hidden_data').value = dataURL;
+            var fd = new FormData(document.forms["form1"]);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upload_data.php', true);
+
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    var percentComplete = (e.loaded / e.total) * 100;
+                    console.log(percentComplete + '% uploaded');
+                    alert('Succesfully uploaded');
+                }
+            };
+
+            xhr.onload = function() {
+
+            };
+            xhr.send(fd);
+        };
+    </script>
+
+<!-- testing data end -->
+
+<script>
+signatureCapture();
+</script>
+
+
+
+</br>
+Saved Image
+</br>
+<img id="saveSignature" alt="Saved image png"/>
+
+</body>
+</html>
